@@ -50,6 +50,12 @@ class SegMatchWorker {
       publish_local_representation_[track_id] = false;
   }
   
+  typedef pcl::PointXYZI PointI;
+  typedef pcl::PointCloud<PointI> PointICloud;
+  void getTargetRepresentation(PointICloud* target_representation) {
+    segmatch_.getTargetRepresentation(target_representation, false);
+  }
+
  private:
 
   void loadTargetCloud();

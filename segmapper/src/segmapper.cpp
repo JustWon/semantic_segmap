@@ -10,6 +10,8 @@
 #include <tf/transform_listener.h>
 #include <tf_conversions/tf_eigen.h>
 
+#include <pcl/io/ply_io.h>
+
 using namespace laser_slam;
 using namespace laser_slam_ros;
 using namespace segmatch;
@@ -321,8 +323,9 @@ void SegMapper::segMatchThread() {
 bool SegMapper::saveMapServiceCall(segmapper::SaveMap::Request& request,
                                    segmapper::SaveMap::Response& response) {
   try {
-    pcl::io::savePCDFileASCII(request.filename.data,
-                              local_maps_.front().getFilteredPoints());
+    PointICloud target_representation;
+    segmatch_worker_.getTargetRepresentation(&target_representation);
+    pcl::io::savePLYFile(request.filename.data, target_representation);
   }
   catch (const std::runtime_error& e) {
     ROS_ERROR_STREAM("Unable to save: " << e.what());
@@ -339,7 +342,7 @@ bool SegMapper::saveLocalMapServiceCall(segmapper::SaveMap::Request& request,
   local_map += local_maps_[0].getFilteredPoints();
   map_lock.unlock();
   try {
-    pcl::io::savePCDFileASCII(request.filename.data, mapPoint2PointCloud(local_map));
+    pcl::io::savePLYFile(request.filename.data, mapPoint2PointCloud(local_map));
   }
   catch (const std::runtime_error& e) {
     ROS_ERROR_STREAM("Unable to save: " << e.what());

@@ -59,9 +59,7 @@ runs = config.cnn_train_folders.split(",")
 for run in runs:
     dataset = get_default_dataset(config, run)
 
-    run_segments, _, run_classes, run_n_classes, _, _, _ = dataset.load(
-        preprocessor=preprocessor
-    )
+    run_segments, _, run_classes, run_n_classes, _, _, _ = dataset.load(preprocessor=preprocessor)
     run_duplicate_classes = dataset.duplicate_classes
     run_duplicate_ids = dataset.duplicate_ids
 
@@ -71,9 +69,7 @@ for run in runs:
     segments += run_segments
     classes = np.concatenate((classes, run_classes), axis=0)
     n_classes += run_n_classes
-    duplicate_classes = np.concatenate(
-        (duplicate_classes, run_duplicate_classes), axis=0
-    )
+    duplicate_classes = np.concatenate((duplicate_classes, run_duplicate_classes), axis=0)
     duplicate_ids = np.concatenate((duplicate_ids, run_duplicate_ids), axis=0)
 
     max_duplicate_class = np.max(duplicate_classes) + 1
