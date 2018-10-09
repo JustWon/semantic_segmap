@@ -14,7 +14,7 @@ configfile = "default_training.ini"
 config = Config(configfile)
 
 # load dataset
-dataset = get_default_dataset(config)
+dataset = get_default_dataset(config,'/home/dongwonshin/Desktop/segmap_dataset/training_datasets/dataset18')
 preprocessor = get_default_preprocessor(config)
 
 segments, positions, classes, n_classes, _, _, _ = dataset.load(

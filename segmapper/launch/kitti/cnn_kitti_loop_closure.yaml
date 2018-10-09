@@ -6,7 +6,7 @@ SegMapper: {
   clear_local_map_after_loop_closure: false,
   
   publish_world_to_odom: true,
-  tf_publication_rate_hz: 10,
+  tf_publication_rate_hz: 20,
   
   LaserSlamWorker: {
     use_odometry_information: true,
@@ -14,7 +14,10 @@ SegMapper: {
     odom_frame: "world",
     sensor_frame: "velodyne",
     
-    assembled_cloud_sub_topic: "/velodyne_points",
+    without_imu : false,
+    # assembled_cloud_sub_topic: "/velodyne_points",
+    assembled_cloud_sub_topic: "/labeled_points",
+
     trajectory_pub_topic: "trajectory",
     odometry_trajectory_pub_topic: "odometry_trajectory",
     full_map_pub_topic: "full_map",
@@ -22,7 +25,7 @@ SegMapper: {
     distant_map_pub_topic: "distant_map",
         
     create_filtered_map: true,
-    publish_local_map: false,
+    publish_local_map: true,
     publish_distant_map: false,
     publish_full_map: false,
     map_publication_rate_hz: 3,

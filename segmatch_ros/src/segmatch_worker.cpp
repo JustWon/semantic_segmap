@@ -224,7 +224,8 @@ void SegMatchWorker::publish() {
     matches_.clear();
     publishSourceRepresentation();
     //publishSourceReconstruction();
-    //publishSourceSemantics();
+    publishSourceSemantics();
+    publishTargetSemantics();
 
     publishSourceSegmentsCentroids();
     //publishSegmentationPositions();

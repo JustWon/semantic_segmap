@@ -15,7 +15,7 @@
 
   <buildtool_depend>catkin</buildtool_depend>
   <buildtool_depend>catkin_simple</buildtool_depend>
-  
+
   <depend>cmake_modules</depend>
   <depend>doxygen_catkin</depend>
   <depend>eigen_catkin</depend>
@@ -25,8 +25,11 @@
   <depend>laser_slam_ros</depend>
   <depend>libpointmatcher</depend>
   <depend>libpointmatcher_ros</depend>
-  <depend>message_generation</depend>
-  <depend>message_runtime</depend>
+  <!-- <depend>message_generation</depend> -->
+  <!-- <depend>message_runtime</depend> -->
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <exec_depend>message_runtime</exec_depend>
   <depend>minkindr</depend>
   <depend>nav_msgs</depend>
   <depend>roscpp</depend>

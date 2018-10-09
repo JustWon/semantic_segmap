@@ -6,8 +6,9 @@
 
   <!-- Bag file path -->  
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/2011_09_30_drive_18.bag"/> -->
+  <arg name="bag_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/2011_09_30_drive_18_labeled.bag"/>
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/SeoulRobotics/2018-07-04-gangnam-driving/2018-07-04-14-52-06.bag"/> -->
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/SeoulRobotics/2018-07-04-gangnam-double-lidar/2018-07-04-16-52-06.bag"/>
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/SeoulRobotics/2018-07-04-gangnam-double-lidar/2018-07-04-16-52-06.bag"/> -->
   <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->

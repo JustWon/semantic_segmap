@@ -4,6 +4,16 @@ project(segmapper)
 add_definitions(-std=c++11 -DBENCHMARK_ENABLE)
 
 find_package(catkin_simple 0.1.0 REQUIRED)
+find_package(catkin REQUIRED COMPONENTS message_generation)
+
+# catkin_package(
+#     CATKIN_DEPENDS message_runtime
+# )
+
+add_message_files(
+    FILES
+    LabeledPointCloud.msg
+)
 
 catkin_simple(ALL_DEPS_REQUIRED)
 

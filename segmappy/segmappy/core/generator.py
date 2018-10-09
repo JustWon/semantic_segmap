@@ -3,7 +3,6 @@ import numpy as np
 
 from ..tools.classifiertools import to_onehot
 
-
 class Generator(object):
     def __init__(
         self,
