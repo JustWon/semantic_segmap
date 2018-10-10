@@ -13,9 +13,11 @@ SegMapper: {
     
     odom_frame: "world",
     sensor_frame: "velodyne",
+    # sensor_frame: "base_link",
     
     without_imu : false,
     # assembled_cloud_sub_topic: "/velodyne_points",
+    # assembled_cloud_sub_topic: "/kitti/velo/pointcloud",
     assembled_cloud_sub_topic: "/labeled_points",
 
     trajectory_pub_topic: "trajectory",
