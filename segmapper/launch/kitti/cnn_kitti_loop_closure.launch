@@ -9,14 +9,14 @@
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/2011_10_03_drive_0027_2.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_30_drive_0033_synced.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/2011_10_03_drive_27.bag"/> -->
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2018-10-10-17-47-51.bag"/>
+  <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti-2011-10-03-drive-0027.bag"/>
   <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->
   <arg name="rviz_config_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/kitti_loop_closure.rviz"/>
 
   <!-- ROS parameters -->
-  <rosparam>use_sim_time: true</rosparam>
+  <rosparam>use_sim_time: true</rosparam>;;
   <rosparam command="load" file="$(find segmapper)/launch/kitti/cnn_kitti_loop_closure.yaml"/>
 
   <!-- rviz node -->
