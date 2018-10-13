@@ -128,9 +128,7 @@ void SegMapper::publishMapThread() {
       map_lock.unlock();
     }
     sensor_msgs::PointCloud2 msg;
-    laser_slam_ros::convert_to_point_cloud_2_msg(
-        local_maps,
-        params_.world_frame, &msg);
+    laser_slam_ros::convert_to_point_cloud_2_msg(local_maps, params_.world_frame, &msg);
     local_map_pub_.publish(msg);
     thread_rate.sleep();
   }

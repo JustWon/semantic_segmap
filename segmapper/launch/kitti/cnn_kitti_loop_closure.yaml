@@ -9,6 +9,7 @@ SegMapper: {
   tf_publication_rate_hz: 20,
   
   LaserSlamWorker: {
+    remove_ground_from_local_map: true,
     use_odometry_information: true,
     
     odom_frame: "world",
@@ -23,10 +24,14 @@ SegMapper: {
     odometry_trajectory_pub_topic: "odometry_trajectory",
     full_map_pub_topic: "full_map",
     local_map_pub_topic: "local_map",
+    semantic_local_map_pub_topic: "semantic_local_map",
+    semantic_full_map_pub_topic: "semantic_full_map",
     distant_map_pub_topic: "distant_map",
         
     create_filtered_map: true,
     publish_local_map: true,
+    publish_semantic_local_map: true,
+    publish_semantic_full_map: false, # huge overhead
     publish_distant_map: false,
     publish_full_map: false,
     map_publication_rate_hz: 3,
@@ -63,7 +68,7 @@ SegMapper: {
     check_pose_lies_below_segments: false,
 
     LocalMap: {
-      voxel_size_m: 0.10,
+      voxel_size_m: 0.001,
       min_points_per_voxel: 1,
       radius_m: 50,
       min_vertical_distance_m: -999.0,
