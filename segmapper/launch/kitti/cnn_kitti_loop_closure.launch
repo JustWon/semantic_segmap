@@ -5,11 +5,28 @@
   <arg name="respawn_value" default="false" /> <!-- boolean: true, false -->
 
   <!-- Bag file path -->  
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/2011_09_30_drive_18.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/2011_10_03_drive_0027_2.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027_synced_labeled_points.bag"/> -->
+
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0051_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0022_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_10_03_drive_0047_synced.bag"/> -->
+
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0014_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0002_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0009_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0019_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0101_synced.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_30_drive_0033_synced.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/segmap_dataset/kitti/2011_10_03_drive_27.bag"/> -->
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti-2011-10-03-drive-0027.bag"/>
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0023_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0020_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0087_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0094_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0153_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0039_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0016_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0021_synced.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_10_03_drive_0042_synced.bag"/> -->
   <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->
@@ -24,12 +41,10 @@
   
   <!-- CNN model path -->
   <arg name="cnn_model_path" value="/home/dongwonshin/.segmap/trained_models/segmap64/"/>
-  <!-- <arg name="cnn_model_path" value="/home/dongwonshin/Desktop/segmap_dataset/trained_models/segmap64/"/> -->
   <rosparam param="/SegMapper/SegMatchWorker/SegMatch/Descriptors/cnn_model_path" subst_value="True">$(arg cnn_model_path)</rosparam>
   
   <!-- Semantics nn path -->
   <arg name="semantics_nn_path" value="/home/dongwonshin/.segmap/trained_models/segmap64_semantics/"/>
-  <!-- <arg name="semantics_nn_path" value="/home/dongwonshin/Desktop/segmap_dataset/trained_models/segmap64_semantics/"/> -->
   <rosparam param="/SegMapper/SegMatchWorker/SegMatch/Descriptors/semantics_nn_path" subst_value="True">$(arg semantics_nn_path)</rosparam>
   
   <!-- segmapper node -->

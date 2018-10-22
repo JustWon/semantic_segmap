@@ -212,7 +212,8 @@ void SegMapper::segMatchThread() {
           pose_at_last_localization_ = current_pose.T_w;
         }
       }
-    } else {
+    } 
+    else {
       RelativePose loop_closure;
 
       // If there is a loop closure.

@@ -6,16 +6,15 @@ SegMapper: {
   clear_local_map_after_loop_closure: false,
   
   publish_world_to_odom: true,
-  tf_publication_rate_hz: 10,
+  tf_publication_rate_hz: 20,
   
   LaserSlamWorker: {
     use_odometry_information: true,
     
-    odom_frame: "world",
-    sensor_frame: "velodyne",
+    odom_frame: "a",
+    sensor_frame: "b",
     
-    without_imu : true,
-    double_lidars : true,
+    IRAP_format : true,
     assembled_cloud_sub_topic: "/ns1/velodyne_points",
     assembled_cloud_sub2_topic: "/ns2/velodyne_points",
     trajectory_pub_topic: "trajectory",
@@ -118,7 +117,7 @@ SegMapper: {
       add_m_estimator_on_icp: false,
     
       use_icp_factors: true, #Introducing ICP constraints will introduce a drift.
-      use_odom_factors: false,
+      use_odom_factors: true,
       nscan_to_match: 3,
       nscan_in_sub_map: 5,
       save_icp_results: false,
