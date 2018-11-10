@@ -62,7 +62,7 @@ class SegMapper {
   void getParameters();
 
   /// The local map for each \c LaserSlamWoker.
-  std::vector<segmatch::LocalMap<segmatch::PclPoint, segmatch::MapPoint>> local_maps_;
+  std::vector<segmatch::LocalMap<segmatch::PointI, segmatch::MapPoint>> local_maps_;
   std::vector<std::mutex> local_maps_mutexes_;
 
   // Node handle.

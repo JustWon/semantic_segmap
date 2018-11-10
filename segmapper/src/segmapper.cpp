@@ -179,7 +179,9 @@ void SegMapper::segMatchThread() {
     track_id = (track_id + 1u) % laser_slam_workers_.size();
 
     // Get the queued points.
-    auto new_points = laser_slam_workers_[track_id]->getQueuedPoints();
+    // auto new_points = laser_slam_workers_[track_id]->getQueuedPoints();
+    auto new_points = laser_slam_workers_[track_id]->getSemanticQueuedPoints();
+
     if (new_points.empty()) {
       BENCHMARK_STOP_AND_IGNORE("SM");
       ++skipped_tracks_count;
@@ -217,8 +219,7 @@ void SegMapper::segMatchThread() {
       RelativePose loop_closure;
 
       // If there is a loop closure.
-      if (segmatch_worker_.processLocalMap(local_maps_[track_id], current_pose,
-                                           track_id, &loop_closure)) {
+      if (segmatch_worker_.processLocalMap(local_maps_[track_id], current_pose, track_id, &loop_closure)) {
         BENCHMARK_BLOCK("SM.ProcessLoopClosure");
         LOG(INFO)<< "Found loop closure! track_id_a: " << loop_closure.track_id_a <<
             " time_a_ns: " << loop_closure.time_a_ns <<
@@ -314,6 +315,9 @@ void SegMapper::segMatchThread() {
     skip_counters_[track_id] = 0u;
     BENCHMARK_STOP("SM");
   }
+
+  // save trajectory
+  laser_slam_workers_[0]->exportTrajectory_KITTI("/tmp/trajectory.csv");
 
   Benchmarker::logStatistics(LOG(INFO));
   Benchmarker::saveData();

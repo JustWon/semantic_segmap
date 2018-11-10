@@ -5,8 +5,7 @@
   <arg name="respawn_value" default="false" /> <!-- boolean: true, false -->
 
   <!-- Bag file path -->  
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027_synced_labeled_points.bag"/> -->
+  <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027.bag"/>
 
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0051_synced.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0022_synced.bag"/> -->

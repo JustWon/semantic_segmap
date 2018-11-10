@@ -4,11 +4,22 @@
   
   <arg name="respawn_value" default="false" /> <!-- boolean: true, false -->
 
-  <!-- Bag file path -->  
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027_synced_labeled_points.bag"/> -->
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0051_synced_labeled_points.bag"/>
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0022_synced_labeled_points.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_10_03_drive_0047_synced_labeled_points.bag"/> -->
+  <!-- KITTI odometry dataset -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_10_03_drive_0027.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_10_03_drive_0042.bag"/> --> 
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_10_03_drive_0034.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0016.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0018.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0020.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0027.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0028.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0033.bag"/> -->
+  <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0033.bag"/>
+
+  <!-- KITTI raw dataset -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_09_26_0051.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_09_26_0022.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_10_03_0047.bag"/> -->
   <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->
@@ -36,6 +47,6 @@
   </include>
   
     <!-- rosbag player node -->
-  <node name="player" pkg="rosbag" type="play" output="screen" args=" -r 1 -s 0 --clock $(arg bag_file)"/>	
+  <node name="player" pkg="rosbag" type="play" output="screen" args=" -r 1 -s 0 --clock $(arg bag_file)"/>
  
 </launch>

@@ -61,8 +61,7 @@ class LocalMap {
   /// \brief Update the pose of the robot and add new points to the local map.
   /// \param new_clouds Vector of point clouds to be added.
   /// \param pose The new pose of the robot.
-  void updatePoseAndAddPoints(const std::vector<InputCloud>& new_clouds,
-                              const laser_slam::Pose& pose);
+  void updatePoseAndAddPoints(const std::vector<InputCloud>& new_clouds, const laser_slam::Pose& pose);
 
   /// \brief Apply a pose transformation to the points contained in the local map.
   /// \remark Multiple transformations are cumulative.

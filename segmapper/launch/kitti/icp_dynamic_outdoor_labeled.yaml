@@ -31,7 +31,7 @@ outlierFilters:
      source: reading
      descName: semantic
      useLargerThan: 0
-     threshold: 0.1
+     threshold: 1.1
 
 errorMinimizer:
   PointToPlaneErrorMinimizer

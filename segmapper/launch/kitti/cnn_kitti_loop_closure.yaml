@@ -10,7 +10,7 @@ SegMapper: {
   
   LaserSlamWorker: {
     remove_ground_from_local_map: true,
-    use_odometry_information: true,
+    use_odometry_information: false,
     
     odom_frame: "world",
 
@@ -18,7 +18,7 @@ SegMapper: {
     # assembled_cloud_sub_topic: "/kitti/velo/pointcloud",
 
     sensor_frame: "velodyne",
-    assembled_cloud_sub_topic: "/labeled_points",
+    assembled_cloud_sub_topic: "/velodyne_points",
 
     trajectory_pub_topic: "trajectory",
     odometry_trajectory_pub_topic: "odometry_trajectory",
@@ -64,9 +64,9 @@ SegMapper: {
     check_pose_lies_below_segments: false,
 
     LocalMap: {
-      voxel_size_m: 0.001,
+      voxel_size_m: 0.01,
       min_points_per_voxel: 1,
-      radius_m: 100,
+      radius_m: 50,
       min_vertical_distance_m: -999.0,
       max_vertical_distance_m: 999.0,
       neighbors_provider_type: "KdTree",
@@ -76,7 +76,7 @@ SegMapper: {
       segmenter_type: "IncrementalEuclideanDistance", # IncrementalSmoothnessConstraints, SimpleSmoothnessConstraints
       min_cluster_size: 100,
       max_cluster_size: 15000,
-      radius_for_growing: 0.2
+      radius_for_growing: 0.2 
     },
 
     Descriptors: {
@@ -120,7 +120,7 @@ SegMapper: {
       add_m_estimator_on_icp: false,
     
       use_icp_factors: true, #Introducing ICP constraints will introduce a drift.
-      use_odom_factors: true,
+      use_odom_factors: false,
       nscan_to_match: 3,
       nscan_in_sub_map: 5,
       save_icp_results: false,

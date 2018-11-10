@@ -20,7 +20,7 @@
 namespace segmatch {
 
 // Force the compiler to reuse instantiations provided in dynamic_voxel_grid.cpp
-extern template class DynamicVoxelGrid<PclPoint, MapPoint>;
+extern template class DynamicVoxelGrid<PointI, MapPoint>;
 
 //=================================================================================================
 //    DynamicVoxelGrid public methods implementation

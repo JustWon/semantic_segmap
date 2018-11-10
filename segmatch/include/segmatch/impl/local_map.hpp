@@ -13,7 +13,7 @@
 namespace segmatch {
 
 // Force the compiler to reuse instantiations provided in local_map.cpp
-extern template class LocalMap<PclPoint, MapPoint>;
+extern template class LocalMap<PointI, MapPoint>;
 
 //=================================================================================================
 //    LocalMap public methods implementation
@@ -113,8 +113,7 @@ std::vector<int> LocalMap<InputPointT, ClusteredPointT>::addPointsAndGetCreatedV
   BENCHMARK_RECORD_VALUE("SM.UpdateLocalMap.InsertedPoints", merged_cloud.size());
   BENCHMARK_RECORD_VALUE("SM.UpdateLocalMap.CreatedVoxels", created_points_indices.size());
   BENCHMARK_RECORD_VALUE("SM.UpdateLocalMap.ActiveVoxels", getFilteredPoints().size());
-  BENCHMARK_RECORD_VALUE("SM.UpdateLocalMap.InactiveVoxels",
-                         voxel_grid_.getInactiveCentroids().size());
+  BENCHMARK_RECORD_VALUE("SM.UpdateLocalMap.InactiveVoxels", voxel_grid_.getInactiveCentroids().size());
 
   return created_points_indices;
 }
