@@ -43,7 +43,7 @@ SegMapper::SegMapper(ros::NodeHandle& n) : nh_(n) {
   local_maps_mutexes_ = std::vector<std::mutex>(params_.number_of_robots);
   if (laser_slam_worker_params_.publish_local_map) {
     local_map_pub_ = nh_.advertise<sensor_msgs::PointCloud2>(
-        laser_slam_worker_params_.local_map_pub_topic,
+        laser_slam_worker_params_.semantic_local_map_topic,
         kPublisherQueueSize);
   }
 
@@ -81,15 +81,15 @@ SegMapper::SegMapper(ros::NodeHandle& n) : nh_(n) {
       params.trajectory_pub_topic = params_.robot_prefix + std::to_string(i + offset) + "/" +
           laser_slam_worker_params_.trajectory_pub_topic;
 
-      params.local_map_pub_topic = params_.robot_prefix + std::to_string(i + offset) + "/" +
-          laser_slam_worker_params_.local_map_pub_topic;
+      params.semantic_local_map_topic = params_.robot_prefix + std::to_string(i + offset) + "/" +
+          laser_slam_worker_params_.semantic_local_map_topic;
     }
 
     LOG(INFO) << "Robot " << i << " subscribes to " << params.assembled_cloud_sub_topic << " "
         << params.odom_frame << " and " << params.sensor_frame;
 
     LOG(INFO) << "Robot " << i << " publishes to " << params.trajectory_pub_topic << " and "
-        << params.local_map_pub_topic;
+        << params.semantic_local_map_topic;
 
     std::unique_ptr<LaserSlamWorker> laser_slam_worker(new LaserSlamWorker());
     laser_slam_worker->init(nh_, params, incremental_estimator_, i);
@@ -179,7 +179,6 @@ void SegMapper::segMatchThread() {
     track_id = (track_id + 1u) % laser_slam_workers_.size();
 
     // Get the queued points.
-    // auto new_points = laser_slam_workers_[track_id]->getQueuedPoints();
     auto new_points = laser_slam_workers_[track_id]->getSemanticQueuedPoints();
 
     if (new_points.empty()) {
@@ -275,9 +274,7 @@ void SegMapper::segMatchThread() {
           map_lock.unlock();
         }
         sensor_msgs::PointCloud2 msg;
-        laser_slam_ros::convert_to_point_cloud_2_msg(
-            local_maps,
-            params_.world_frame, &msg);
+        laser_slam_ros::convert_to_point_cloud_2_msg(local_maps, params_.world_frame, &msg);
         local_map_pub_.publish(msg);
 
         // Update the Segmatch object.

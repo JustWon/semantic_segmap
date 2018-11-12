@@ -68,8 +68,7 @@ std::vector<int> DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::insert(const InputCloud&
     voxel_data.points_end = p_it;
 
     // Create the voxel
-    if (createVoxel_(voxel_index, voxel_data, new_voxels,
-                     *new_active_centroids, *new_inactive_centroids)) {
+    if (createVoxel_(voxel_index, voxel_data, new_voxels, *new_active_centroids, *new_inactive_centroids)) {
       created_voxel_indices.push_back(new_active_centroids->size()-1);
     }
   }
@@ -85,8 +84,7 @@ std::vector<int> DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::insert(const InputCloud&
 template<_DVG_TEMPLATE_DECL_>
 template<typename PointXYZ_>
 inline IndexT DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::getIndexOf(const PointXYZ_& point) const {
-  static_assert(pcl::traits::has_xyz<PointXYZ_>::value,
-                "PointXYZ_ must be a structure containing XYZ coordinates");
+  static_assert(pcl::traits::has_xyz<PointXYZ_>::value, "PointXYZ_ must be a structure containing XYZ coordinates");
   // TODO: One could pack indexing transformation, offsetting and scaling in a single
   // transformation. min_corner and max_corner would need to be transformed as well in order
   // to allow checks. Since it would decrease readability significantly, this should be done only
@@ -147,13 +145,43 @@ void DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::dumpVoxels() const {
 //    DynamicVoxelGrid private methods implementation
 //=================================================================================================
 
+bool semantic_voxel_filter (float semantic_label)
+{
+  bool flag;
+  switch (int(semantic_label)){
+    case 0: // Misc.
+      flag = true;
+      break;
+    case 1000: // Car (this is controversial)
+      flag = true;
+      break;
+    case 2000: // Ground
+      flag = true;
+      break;
+    case 3000: // Cyclist
+      flag = false;
+      break;
+    case 4000: // Pedestrian
+      flag = false;
+      break;
+    default:
+      flag = true;
+      break;
+  }
+
+  return flag;
+}
+
 template<_DVG_TEMPLATE_DECL_>
 inline typename DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::IndexedPoints_
 DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::indexAndSortPoints_(const InputCloud& points) const {
   IndexedPoints_ indexed_points;
   indexed_points.reserve(points.size());
   for (const auto& point : points) {
-    indexed_points.emplace_back(point, getIndexOf(point));
+    
+    // semantic filter
+    if (semantic_voxel_filter(point.intensity))
+      indexed_points.emplace_back(point, getIndexOf(point));
   }
 
   auto predicate = [](const IndexedPoint_& a, const IndexedPoint_& b) {
@@ -181,15 +209,32 @@ inline bool DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::createVoxel_(
     if (new_points_count != 0u) {
       centroid_map *= static_cast<float>(old_points_count);
     }
+    centroid.intensity = data.old_voxel->centroid->intensity;
   }
   uint32_t total_points_count = old_points_count + new_points_count;
 
   // Add contribution from the new points.
   if (new_points_count != 0u) {
+    // TODO: the number of semantic labels, currently 5
+    int intensity_cnt_array[5]= {0,};
     for (auto it = data.points_begin; it != data.points_end; ++it) {
       centroid_map += it->point.getVector3fMap();
+
+      int idx = int(it->point.intensity)/1000;
+      intensity_cnt_array[idx]++;
     }
     centroid_map /= static_cast<float>(total_points_count);
+
+    int max_idx = -1, max_cnt = -1;
+    for (int i  = 0 ; i < 5 ; i++)
+    {
+      if(max_cnt < intensity_cnt_array[i])
+      {
+        max_cnt = intensity_cnt_array[i];
+        max_idx = i;
+      }
+    }
+    centroid.intensity = max_idx*1000;
   }
 
   // Save centroid to the correct point cloud.

@@ -13,11 +13,11 @@
 struct _SegMatch_PointExtended {
   inline _SegMatch_PointExtended(const _SegMatch_PointExtended &p)
     : data { p.x, p.y, p.z, 1.0f }, ed_cluster_id(p.ed_cluster_id),
-      sc_cluster_id(p.sc_cluster_id) {
+      sc_cluster_id(p.sc_cluster_id), intensity(p.intensity) {
   }
 
   inline _SegMatch_PointExtended()
-    : data { 0.0f, 0.0f, 0.0f, 1.0f }, ed_cluster_id(0u), sc_cluster_id(0u) {
+    : data { 0.0f, 0.0f, 0.0f, 1.0f }, ed_cluster_id(0u), sc_cluster_id(0u), intensity(0u) {
   }
 
   friend std::ostream& operator << (std::ostream& os, const _SegMatch_PointExtended& p) {
@@ -35,9 +35,10 @@ struct _SegMatch_PointExtended {
     struct {
       uint32_t ed_cluster_id;
       uint32_t sc_cluster_id;
-    };
+    }; 
     uint32_t data_c[4];
   };
+  uint32_t intensity;
   EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 };
 
@@ -48,6 +49,7 @@ POINT_CLOUD_REGISTER_POINT_STRUCT (_SegMatch_PointExtended,
                                    (float, z, z)
                                    (uint32_t, ed_cluster_id, ed_cluster_id)
                                    (uint32_t, sc_cluster_id, sc_cluster_id)
+                                   (uint32_t, intensity, intensity)
 )
 
 namespace segmatch {

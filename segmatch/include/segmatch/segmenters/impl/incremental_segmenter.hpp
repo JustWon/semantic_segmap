@@ -44,8 +44,7 @@ void IncrementalSegmenter<ClusteredPointT, PolicyName>::segment(
   writeClusterIndicesToCloud(partial_clusters, cloud);
 
   // Extract the valid segment and add them to the segmented cloud.
-  addSegmentsToSegmentedCloud(cloud, partial_clusters, num_clusters, cluster_ids_to_segment_ids,
-                              segmented_cloud);
+  addSegmentsToSegmentedCloud(cloud, partial_clusters, num_clusters, cluster_ids_to_segment_ids, segmented_cloud);
 }
 
 //=================================================================================================
@@ -190,8 +189,7 @@ inline void IncrementalSegmenter<ClusteredPointT, PolicyName>::growRegions(
     if (!processed[i]) {
       // Mark the point as processed and grow the cluster starting from it.
       processed[i] = true;
-      growRegionFromSeed(normals, cloud, points_neighbors_provider, i, processed, partial_clusters,
-                         renamed_segments);
+      growRegionFromSeed(normals, cloud, points_neighbors_provider, i, processed, partial_clusters, renamed_segments);
     }
   }
 }

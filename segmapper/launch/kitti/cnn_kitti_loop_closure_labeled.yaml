@@ -21,8 +21,8 @@ SegMapper: {
     trajectory_pub_topic: "trajectory",
     odometry_trajectory_pub_topic: "odometry_trajectory",
     full_map_pub_topic: "full_map",
-    local_map_pub_topic: "local_map",
-    semantic_local_map_pub_topic: "semantic_local_map",
+    semantic_local_map_topic: "semantic_local_map",
+    semantic_single_scan_pub_topic: "semantic_single_scan",
     semantic_full_map_pub_topic: "semantic_full_map",
     distant_map_pub_topic: "distant_map",
         
