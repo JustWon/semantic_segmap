@@ -18,7 +18,7 @@ PointICloud RVizUtilities::segmentedCloudtoPointICloud(
     } else if (use_reconstruction) {
       cloud_size += segment.second.getLastView().reconstruction.size();
     } else {
-      cloud_size += segment.second.getLastView().point_cloud.size();
+      cloud_size += segment.second.getLastView().semantic_point_cloud.size();
     }
   }
   cloud.reserve(cloud_size);
@@ -37,8 +37,8 @@ PointICloud RVizUtilities::segmentedCloudtoPointICloud(
         cloud.back().getArray3fMap() = point.getArray3fMap();
       }
     } else {
-      for (const auto& point : segment.second.getLastView().point_cloud) {
-        cloud.push_back(PointI(segment_color));
+      for (const auto& point : segment.second.getLastView().semantic_point_cloud) {
+        cloud.push_back(PointI(point.intensity));
         cloud.back().getArray3fMap() = point.getArray3fMap();
       }
     }

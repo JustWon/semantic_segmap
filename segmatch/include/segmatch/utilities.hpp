@@ -155,6 +155,38 @@ static PclPoint calculateCentroid(const PointCloud& point_cloud){
   return PclPoint(x_mean, y_mean, z_mean);
 }
 
+static PointI calculateCentroid(const PointICloud& point_cloud){
+  std::feclearexcept(FE_ALL_EXCEPT);
+  // Find the mean position of a segment.
+  double x_mean = 0.0;
+  double y_mean = 0.0;
+  double z_mean = 0.0;
+  const size_t n_points = point_cloud.points.size();
+  for (const auto& point : point_cloud.points) {
+    x_mean += point.x / n_points;
+    y_mean += point.y / n_points;
+    z_mean += point.z / n_points;
+  }
+
+  // Check that there were no overflows, underflows, or invalid float operations.
+  if (std::fetestexcept(FE_OVERFLOW)) {
+    LOG(ERROR) << "Overflow error in centroid computation.";
+  } else if (std::fetestexcept(FE_UNDERFLOW)) {
+    LOG(ERROR) << "Underflow error in centroid computation.";
+  } else if (std::fetestexcept(FE_INVALID)) {
+    LOG(ERROR) << "Invalid Flag error in centroid computation.";
+  } else if (std::fetestexcept(FE_DIVBYZERO)) {
+    LOG(ERROR) << "Divide by zero error in centroid computation.";
+  }
+  
+  PointI ret;
+  ret.x = x_mean;
+  ret.y = y_mean;
+  ret.z = z_mean;
+
+  return ret;
+}
+
 static PointCloud mapPoint2PointCloud(const MapCloud& map_cloud) {
     PointCloud point_cloud;
     for (const auto& point : map_cloud.points) {
