@@ -61,8 +61,8 @@ class Config(object):
                 )
             )
 
-        self.cnn_train_folders = config.get("general", "cnn_train_folders")
-        self.cnn_test_folder = config.get("general", "cnn_test_folder")
+        self.train_folders = config.get("general", "train_folders")
+        self.test_folder = config.get("general", "test_folder")
         self.semantics_train_folder = config.get("general", "semantics_train_folder")
         self.use_merges = config.getboolean("general", "use_merges")
         self.keep_match_thresh = config.getfloat("general", "keep_match_thresh")
@@ -117,8 +117,8 @@ class Config(object):
                     self.model_base_dir
                 )
             )
-        self.cnn_model_folder = os.path.abspath(
-            os.path.join(self.model_base_dir, config.get("train", "cnn_model_folder"))
+        self.model_folder = os.path.abspath(
+            os.path.join(self.model_base_dir, config.get("train", "model_folder"))
         )
         try:
             self.semantics_folder_name = config.get("train", "semantics_model_folder")

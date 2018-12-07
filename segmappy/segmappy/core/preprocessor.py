@@ -1,6 +1,6 @@
 from __future__ import print_function
 import numpy as np
-
+from ..tools.classifiertools import to_onehot
 
 class Preprocessor(object):
     def __init__(
@@ -65,6 +65,26 @@ class Preprocessor(object):
             else:
                 self.load_scaler(scaler_path)
 
+    def init_segments_with_labels(
+        self, segments, classes, labels, positions=None, train_ids=None, scaler_path=None
+    ):
+
+        self.segments = segments
+        self.classes = np.array(classes)
+        self.labels = labels
+
+        if self.align == "robot":
+            assert positions is not None
+            self.segments = self._align_robot(self.segments, positions)
+
+        # check if we need to train a scaler
+        if self.remove_mean or self.remove_std:
+            if scaler_path is None:
+                assert train_ids is not None
+                self._train_scaler(train_ids)
+            else:
+                self.load_scaler(scaler_path)
+
     def get_processed(self, segment_ids, train=True, normalize=True):
         batch_segments = []
         for i in segment_ids:
@@ -74,6 +94,19 @@ class Preprocessor(object):
         batch_classes = self.classes[segment_ids]
 
         return batch_segments, batch_classes
+
+    def get_processed_with_labels(self, segment_ids, train=True, normalize=True):
+        batch_segments = []
+        batch_labels = []
+        for i in segment_ids:
+            batch_segments.append(self.segments[i] * (self.labels[i]+1))
+            batch_labels.append(self.labels[i])
+
+        batch_segments = self.process(batch_segments, train, normalize)
+        batch_classes = self.classes[segment_ids]
+        batch_labels = np.asarray(batch_labels)
+
+        return batch_segments, batch_classes, batch_labels
 
     def process(self, segments, train=True, normalize=True):
         # augment through distorsions
@@ -101,6 +134,39 @@ class Preprocessor(object):
 
             # insert into voxel grid
             segments = self._voxelize(segments)
+
+            # remove mean and/or std
+            if normalize and self._scaler_exists:
+                segments = self._normalize_voxel_matrix(segments)
+
+        return segments
+    
+    def process_with_labels(self, segments, labels, train=True, normalize=True):
+        # augment through distorsions
+        if train and self.augment_remove_random_max > 0:
+            segments = self._augment_remove_random(segments)
+
+        if train and self.augment_remove_plane_max > 0:
+            segments = self._augment_remove_plane(segments)
+
+        # align after distorsions
+        if self.align == "eigen":
+            segments = self._align_eigen(segments)
+
+        # augment rotation
+        if train and self.augment_angle > 0:
+            segments = self._augment_rotation(segments)
+
+        if self.voxelize:
+            # rescale coordinates and center
+            segments = self._rescale_coordinates(segments)
+
+            # randomly displace the segment
+            if train and self.augment_jitter > 0:
+                segments = self._augment_jitter(segments)
+
+            # insert into voxel grid
+            segments = self._voxelize_with_labels(segments, labels)
 
             # remove mean and/or std
             if normalize and self._scaler_exists:
@@ -311,6 +377,21 @@ class Preprocessor(object):
 
             # fill voxel grid
             voxelized_segments[i, segment[:, 0], segment[:, 1], segment[:, 2]] = 1
+
+        return voxelized_segments
+    
+    def _voxelize_with_labels(self, segments, labels):
+        voxelized_segments = np.zeros((len(segments),) + tuple(self.voxels) + (1,))
+        for i, segment in enumerate(segments):
+            # remove out of bounds points
+            segment = segment[np.all(segment < self.voxels, axis=1), :]
+            segment = segment[np.all(segment >= 0, axis=1), :]
+
+            # round coordinates
+            segment = segment.astype(np.int)
+
+            # fill voxel grid
+            voxelized_segments[i, segment[:, 0], segment[:, 1], segment[:, 2], 0] = labels[i]
 
         return voxelized_segments
 

@@ -112,8 +112,7 @@ void SegMatch::transferSourceToTarget(unsigned int track_id,
   segmented_target_cloud_.addSegmentedCloud(segmented_source_clouds_[track_id],
                                             renamed_segments_[track_id]);
 
-  filterNearestSegmentsInCloud(segmented_target_cloud_, params_.centroid_distance_threshold_m,
-                               5u);
+  filterNearestSegmentsInCloud(segmented_target_cloud_, params_.centroid_distance_threshold_m, 5u);
 
   classifier_->setTarget(segmented_target_cloud_);
 }

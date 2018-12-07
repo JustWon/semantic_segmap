@@ -199,3 +199,25 @@ def get_default_preprocessor(config):
     )
 
     return preprocessor
+
+def get_my_preprocessor(config):
+    from ..core.preprocessor import Preprocessor
+
+    preprocessor = Preprocessor(
+        augment_angle=config.augment_angle,
+        augment_remove_random_min=config.augment_remove_random_min,
+        augment_remove_random_max=config.augment_remove_random_max,
+        augment_remove_plane_min=config.augment_remove_plane_min,
+        augment_remove_plane_max=config.augment_remove_plane_max,
+        augment_jitter=config.augment_jitter,
+        align=config.align,
+        scale_method=config.scale_method,
+        scale=config.scale,
+        center_method=config.center_method,
+        voxels=config.voxels,
+        remove_mean=config.remove_mean,
+        remove_std=config.remove_std,
+        batch_size=config.batch_size,
+    )
+
+    return preprocessor

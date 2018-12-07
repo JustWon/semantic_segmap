@@ -31,7 +31,7 @@ struct SegmentView {
   pcl::PointCloud<PclPoint> point_cloud_to_publish;
   pcl::PointCloud<PclPoint> reconstruction;
   pcl::PointCloud<PclPoint> reconstruction_compressed;
-  pcl::PointCloud<PointI> semantic_point_cloud;
+  // pcl::PointCloud<PointI> semantic_point_cloud;
   
   Features features;
   PclPoint centroid = PclPoint(0,0,0);
@@ -265,8 +265,8 @@ Id SegmentedCloud::addSegment(const pcl::PointIndices& segment_to_add,
   segment.getLastView().point_cloud.clear();
   segment.getLastView().point_cloud.reserve(segment_to_add.indices.size());
 
-  segment.getLastView().semantic_point_cloud.clear();
-  segment.getLastView().semantic_point_cloud.reserve(segment_to_add.indices.size());
+  // segment.getLastView().semantic_point_cloud.clear();
+  // segment.getLastView().semantic_point_cloud.reserve(segment_to_add.indices.size());
   
   segment.getLastView().point_cloud_to_publish.clear();
   segment.getLastView().point_cloud_to_publish.reserve(segment_to_add.indices.size() / publish_every_x_points);
@@ -283,10 +283,10 @@ Id SegmentedCloud::addSegment(const pcl::PointIndices& segment_to_add,
                                                           reference_cloud.points[index].y,
                                                           reference_cloud.points[index].z);
                                                           
-    segment.getLastView().semantic_point_cloud.points.emplace_back(reference_cloud.points[index].intensity);
-    segment.getLastView().semantic_point_cloud.points.back().x = reference_cloud.points[index].x;
-    segment.getLastView().semantic_point_cloud.points.back().y = reference_cloud.points[index].y;
-    segment.getLastView().semantic_point_cloud.points.back().z = reference_cloud.points[index].z;
+    // segment.getLastView().semantic_point_cloud.points.emplace_back(reference_cloud.points[index].intensity);
+    // segment.getLastView().semantic_point_cloud.points.back().x = reference_cloud.points[index].x;
+    // segment.getLastView().semantic_point_cloud.points.back().y = reference_cloud.points[index].y;
+    // segment.getLastView().semantic_point_cloud.points.back().z = reference_cloud.points[index].z;
 
     if (i % publish_every_x_points == 0) {
         segment.getLastView().point_cloud_to_publish.points.emplace_back(reference_cloud.points[index].x,

@@ -5,7 +5,7 @@
   <arg name="respawn_value" default="false" /> <!-- boolean: true, false -->
 
   <!-- KITTI odometry dataset -->
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_10_03_drive_0027.bag"/>
+  <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0034.bag"/>
   <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->
@@ -13,7 +13,7 @@
 
   <!-- ROS parameters -->
   <rosparam>use_sim_time: true</rosparam>
-  <rosparam command="load" file="/home/dongwonshin/segmap_ws/src/segmap/segmapper/launch/kitti/cnn_kitti_loop_closure_labeled_odom.yaml"/>
+  <rosparam command="load" file="/home/dongwonshin/segmap_ws/src/segmap/segmapper/launch/kitti/cnn_kitti_loop_closure_labeled.yaml"/>
 
   <!-- rviz node -->
   <node name="visualizer" pkg="rviz" type="rviz" output="screen" respawn="$(arg respawn_value)" args="-d $(arg rviz_config_file)" />
@@ -28,7 +28,7 @@
   
   <!-- segmapper node -->
   <include file="$(find segmapper)/launch/segmapper.launch">
-    <arg name="icp_configuration_file" value="/home/dongwonshin/segmap_ws/src/segmap/segmapper/launch/kitti/icp_dynamic_outdoor_labeled.yaml"/>
+    <arg name="icp_configuration_file" value="/home/dongwonshin/segmap_ws/src/segmap/segmapper/launch/kitti/icp_dynamic_outdoor.yaml"/>
     <arg name="icp_input_filters_file" value="$(find segmapper)/launch/kitti/input_filters_outdoor.yaml"/>
   </include>
   

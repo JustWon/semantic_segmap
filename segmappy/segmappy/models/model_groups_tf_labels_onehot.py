@@ -1,9 +1,10 @@
 import tensorflow as tf
+from .triplet_loss import batch_hard_triplet_loss, batch_all_triplet_loss
 
-# define the model
+# define the cnn model
 def init_model(input_shape, n_classes):
     with tf.name_scope("InputScope") as scope:
-        input = tf.placeholder(
+        cnn_input = tf.placeholder(
             dtype=tf.float32, shape=(None,) + input_shape + (1,), name="input"
         )
 
@@ -11,13 +12,15 @@ def init_model(input_shape, n_classes):
     y_true = tf.placeholder(dtype=tf.float32, shape=(None, n_classes), name="y_true")
 
     scales = tf.placeholder(dtype=tf.float32, shape=(None, 3), name="scales")
+    labels = tf.placeholder(dtype=tf.float32, shape=(None, 3), name="labels")
+
 
     training = tf.placeholder_with_default(
         tf.constant(False, dtype=tf.bool), shape=(), name="training"
     )
 
     conv1 = tf.layers.conv3d(
-        inputs=input,
+        inputs=cnn_input,
         filters=32,
         kernel_size=(3, 3, 3),
         padding="same",
@@ -58,8 +61,9 @@ def init_model(input_shape, n_classes):
     )
 
     flatten = tf.contrib.layers.flatten(inputs=conv3)
-    flatten = tf.concat([flatten, scales], axis=1, name="flatten")
+    flatten = tf.concat([flatten, scales, labels], axis=1, name="flatten")
 
+    # classification network
     dense1 = tf.layers.dense(
         inputs=flatten,
         units=512,
@@ -77,29 +81,23 @@ def init_model(input_shape, n_classes):
         bn_dense1, rate=0.5, training=training, name="dropout_dense1"
     )
 
-    # variational block
-    z_mu = tf.layers.dense(
+    descriptor = tf.layers.dense(
         inputs=dropout_dense1,
         units=64,
+        kernel_initializer=tf.contrib.layers.xavier_initializer(),
+        activation=tf.nn.relu,
         use_bias=True,
-        name="z_mu",
+        name="descriptor",
     )
 
-    z_logvar = tf.layers.dense(
-        inputs=dropout_dense1,
-        units=64,
-        use_bias=True,
-        name="z_logvar",
-    )
-
-    eps = tf.random_normal(shape=tf.shape(z_mu), mean=0, stddev=1, dtype=tf.float32)
-    descriptor = z_mu + tf.multiply(tf.exp(0.5*z_logvar) , eps)
-    # end of the variational block
-
-    # classification block
     bn_descriptor = tf.layers.batch_normalization(
         descriptor, training=training, name="bn_descriptor"
     )
+
+
+    # triplet loss
+    labels = tf.argmax(y_true,axis=1)
+    triplet_loss = batch_hard_triplet_loss(labels, bn_descriptor, margin=0.2, squared=False)
 
     with tf.name_scope("OutputScope") as scope:
         tf.add(bn_descriptor, 0, name="descriptor_bn_read")
@@ -122,7 +120,6 @@ def init_model(input_shape, n_classes):
         tf.nn.softmax_cross_entropy_with_logits_v2(logits=y_pred, labels=y_true),
         name="loss_c",
     )
-    # end of the classification block
 
     # reconstruction network
     dec_dense1 = tf.layers.dense(
@@ -134,7 +131,7 @@ def init_model(input_shape, n_classes):
         name="dec_dense1",
     )
 
-    reshape = tf.reshape(dec_dense1, (tf.shape(input)[0], 8, 8, 4, 32))
+    reshape = tf.reshape(dec_dense1, (tf.shape(cnn_input)[0], 8, 8, 4, 32))
 
     dec_conv1 = tf.layers.conv3d_transpose(
         inputs=reshape,
@@ -177,27 +174,21 @@ def init_model(input_shape, n_classes):
 
     FN_TO_FP_WEIGHT = 0.9
     loss_r = -tf.reduce_mean(
-        FN_TO_FP_WEIGHT * input * tf.log(reconstruction + 1e-10)
-        + (1 - FN_TO_FP_WEIGHT) * (1 - input) * tf.log(1 - reconstruction + 1e-10)
+        FN_TO_FP_WEIGHT * cnn_input * tf.log(reconstruction + 1e-10)
+        + (1 - FN_TO_FP_WEIGHT) * (1 - cnn_input) * tf.log(1 - reconstruction + 1e-10)
     )
     tf.identity(loss_r, "loss_r")
-    # end of the reconstruction block
+
+    loss_r = tf.reduce_mean(
+        tf.nn.softmax_cross_entropy_with_logits_v2(logits=y_pred, labels=y_true),
+        name="loss_c",
+    )
+
 
     # training
     LOSS_R_WEIGHT = 200
     LOSS_C_WEIGHT = 1
-    # loss = tf.add(LOSS_C_WEIGHT * loss_c, LOSS_R_WEIGHT * loss_r, name="loss")
-
-    # first approach
-    my_kl_loss = -0.5 * tf.reduce_sum(1 + z_logvar - tf.square(z_mu) - tf.exp(z_logvar),  1)
-    my_kl_loss = tf.reduce_mean(my_kl_loss)
-
-    # second approach
-    # z_stddev = tf.exp(0.5*z_logvar)
-    # my_kl_loss = 0.5 * tf.reduce_sum(tf.square(z_mu) + tf.square(z_stddev) - tf.log(tf.square(z_stddev)+ 1e-10) - 1,1)
-    # my_kl_loss = tf.reduce_mean(my_kl_loss)
-    
-    loss = tf.add(loss_r, my_kl_loss, name="loss")
+    loss = tf.add(LOSS_C_WEIGHT * loss_c, LOSS_R_WEIGHT * (loss_r + triplet_loss), name="loss")
 
     global_step = tf.Variable(0, trainable=False, name="global_step")
     update_step = tf.assign(

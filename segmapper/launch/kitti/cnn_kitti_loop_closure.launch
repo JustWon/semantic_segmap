@@ -5,7 +5,7 @@
   <arg name="respawn_value" default="false" /> <!-- boolean: true, false -->
 
   <!-- Bag file path -->  
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027.bag"/>
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2011_10_03_drive_0027.bag"/> -->
 
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0051_synced.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_26_drive_0022_synced.bag"/> -->
@@ -26,6 +26,10 @@
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0016_synced.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_09_28_drive_0021_synced.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/kitti_2011_10_03_drive_0042_synced.bag"/> -->
+
+    <!-- Unlabeled SR dataset -->
+  <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/2018-11-02-14-02-04.bag"/>
+  
   <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->

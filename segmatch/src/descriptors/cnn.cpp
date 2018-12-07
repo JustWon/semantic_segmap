@@ -47,11 +47,11 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
 
   std::vector<tf_graph_executor::Array3D> batch_nn_input;
   std::vector<Id> described_segment_ids;
-  std::vector<PointI> scales;
-  std::vector<PointI> thresholded_scales;
+  std::vector<PclPoint> scales;
+  std::vector<PclPoint> thresholded_scales;
   std::vector<std::vector<float> > scales_as_vectors;
-  std::vector<PointI> rescaled_point_cloud_centroids;
-  std::vector<PointI> point_mins;
+  std::vector<PclPoint> rescaled_point_cloud_centroids;
+  std::vector<PclPoint> point_mins;
   std::vector<double> alignments_rad;
   std::vector<size_t> nums_occupied_voxels;
 
@@ -59,7 +59,7 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
       it != segmented_cloud_ptr->end(); ++it) {
 
     const PointCloud& point_cloud = it->second.getLastView().point_cloud;
-    const PointICloud& semantic_point_cloud = it->second.getLastView().semantic_point_cloud;
+    // const PointICloud& semantic_point_cloud = it->second.getLastView().semantic_point_cloud;
     const size_t num_points = point_cloud.size();
 
     // Skip describing the segment if it did not change enough.
@@ -71,9 +71,9 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
     // Align with PCA.
     double alignment_rad;
     Eigen::Vector4f pca_centroid;
-    pcl::compute3DCentroid(semantic_point_cloud, pca_centroid);
+    pcl::compute3DCentroid(point_cloud, pca_centroid);
     Eigen::Matrix3f covariance_3d;
-    computeCovarianceMatrixNormalized(semantic_point_cloud, pca_centroid, covariance_3d);
+    computeCovarianceMatrixNormalized(point_cloud, pca_centroid, covariance_3d);
     const Eigen::Matrix2f covariance_2d = covariance_3d.block(0, 0, 2u, 2u);
     Eigen::EigenSolver<Eigen::Matrix2f> eigen_solver(covariance_2d, true);
 
@@ -89,11 +89,11 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
     alignment_rad = -alignment_rad;
     Eigen::Affine3f transform = Eigen::Affine3f::Identity();
     transform.rotate(Eigen::AngleAxisf(alignment_rad, Eigen::Vector3f::UnitZ()));
-    PointICloud rotated_point_cloud;
-    pcl::transformPointCloud(semantic_point_cloud, rotated_point_cloud, transform);
+    PointCloud rotated_point_cloud;
+    pcl::transformPointCloud(point_cloud, rotated_point_cloud, transform);
 
     // Get most points on the lower half of y axis (by rotation).
-    PointI point_min, point_max;
+    PclPoint point_min, point_max;
     pcl::getMinMax3D(rotated_point_cloud, point_min, point_max);
     double centroid_y = point_min.y + (point_max.y - point_min.y) / 2.0;
     unsigned int n_below = 0;
@@ -111,22 +111,22 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
 
     if (save_debug_data_) {
       Segment aligned_segment = it->second;
-      aligned_segment.getLastView().semantic_point_cloud = rotated_point_cloud;
+      aligned_segment.getLastView().point_cloud = rotated_point_cloud;
       aligned_segments_.addValidSegment(aligned_segment);
     }
 
-    PointICloud rescaled_point_cloud;
+    PointCloud rescaled_point_cloud;
     pcl::getMinMax3D(rotated_point_cloud, point_min, point_max);
     point_mins.push_back(point_min);
 
     // "Fit scaling" using the largest dimension as scale.
-    PointI scale;
+    PclPoint scale;
     scale.x = point_max.x - point_min.x;
     scale.y = point_max.y - point_min.y;
     scale.z = point_max.z - point_min.z;
     scales.push_back(scale);
     
-    PointI thresholded_scale;
+    PclPoint thresholded_scale;
     thresholded_scale.x = std::max(scale.x, min_x_scale_m_);
     thresholded_scale.y = std::max(scale.y, min_y_scale_m_);
     thresholded_scale.z = std::max(scale.z, min_z_scale_m_);
@@ -139,7 +139,7 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
     scales_as_vectors.push_back(scales_as_vector);
 
     for (const auto& point: rotated_point_cloud.points) {
-      PointI point_new;
+      PclPoint point_new;
 
       point_new.x = (point.x - point_min.x) / thresholded_scale.x
           * static_cast<float>(n_voxels_x_dim_ - 1u);
@@ -153,7 +153,7 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
     rescaled_point_cloud.width = 1;
     rescaled_point_cloud.height = rescaled_point_cloud.points.size();
 
-    PointI centroid = calculateCentroid(rescaled_point_cloud);
+    PclPoint centroid = calculateCentroid(rescaled_point_cloud);
     rescaled_point_cloud_centroids.push_back(centroid);
 
     unsigned int n_occupied_voxels = 0;
@@ -174,7 +174,7 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
           ++n_occupied_voxels;
         }
         
-        int semantic_label = point.intensity/1000;
+        // int semantic_label = point.intensity/1000;
         // if (semantic_label == 0 ||
         //     semantic_label == 1 ||
         //     semantic_label == 2 ||
@@ -182,7 +182,8 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
         //     semantic_label == 4){
         //   nn_input.container[ind_x][ind_y][ind_z] = 1.0;
         // }
-        nn_input.container[ind_x][ind_y][ind_z] = semantic_label+1;
+        // nn_input.container[ind_x][ind_y][ind_z] = semantic_label+1;
+        nn_input.container[ind_x][ind_y][ind_z] = 1;
       }
     }
     nums_occupied_voxels.push_back(n_occupied_voxels);
@@ -295,15 +296,15 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
                                                                        semantic_nn_output.end()));
 
       // Generate the reconstructions.
-      PointICloud reconstruction;
+      PointCloud reconstruction;
       const double reconstruction_threshold = 0.75;
       const double ratio_voxels_to_reconstruct = 1.5;
       const bool reconstruct_by_probability = true;
 
-      PointI point;
-      const PointI point_min = point_mins[i];
-      const PointI scale = thresholded_scales[i];
-      const PointI centroid = rescaled_point_cloud_centroids[i];
+      PclPoint point;
+      const PclPoint point_min = point_mins[i];
+      const PclPoint scale = thresholded_scales[i];
+      const PclPoint centroid = rescaled_point_cloud_centroids[i];
 
       if (reconstruct_by_probability) {
         for (unsigned int x = 0u; x < n_voxels_x_dim_; ++x) {
@@ -328,12 +329,12 @@ void CNNDescriptor::describe(SegmentedCloud* segmented_cloud_ptr) {
       
       // Order by occupancy probability.
       std::vector<double> probs;
-      std::vector<PointI> indices;
+      std::vector<PclPoint> indices;
       for (unsigned int x = 0u; x < n_voxels_x_dim_; ++x) {
         for (unsigned int y = 0u; y < n_voxels_y_dim_; ++y) {
           for (unsigned int z = 0u; z < n_voxels_z_dim_; ++z) { 
               probs.push_back(reconstructions[i].container[x][y][z]);
-              PointI indice;
+              PclPoint indice;
               indice.x = x;
               indice.y = y;
               indice.z = z;

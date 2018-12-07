@@ -21,6 +21,11 @@
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_09_26_0051.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_09_26_0022.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_10_03_0047.bag"/> -->
+
+    <!-- Labeled SR dataset -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/SeoulRobotics/2018-11-02-maru-labeled-single.bag"/> -->
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/SeoulRobotics/2018-11-02-maru-labeled.bag"/> -->
+
   <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->
@@ -35,6 +40,7 @@
   
   <!-- CNN model path -->
   <arg name="cnn_model_path" value="/home/dongwonshin/.segmap/trained_models/segmap64/"/>
+  <!-- <arg name="cnn_model_path" value="/home/dongwonshin/Desktop/segmap_dataset/trained_models/triplet_loss (batch_hard_triplet_loss)/segmap64/"/> -->
   <rosparam param="/SegMapper/SegMatchWorker/SegMatch/Descriptors/cnn_model_path" subst_value="True">$(arg cnn_model_path)</rosparam>
   
   <!-- Semantics nn path -->
@@ -43,6 +49,7 @@
   
   <!-- segmapper node -->
   <include file="$(find segmapper)/launch/segmapper.launch">
+    <!-- <arg name="icp_configuration_file" value="$(find segmapper)/launch/kitti/icp_dynamic_outdoor.yaml"/> -->
     <arg name="icp_configuration_file" value="$(find segmapper)/launch/kitti/icp_dynamic_outdoor_labeled.yaml"/>
     <arg name="icp_input_filters_file" value="$(find segmapper)/launch/kitti/input_filters_outdoor.yaml"/>
   </include>

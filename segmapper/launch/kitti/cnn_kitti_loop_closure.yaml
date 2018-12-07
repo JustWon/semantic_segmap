@@ -17,6 +17,7 @@ SegMapper: {
     # sensor_frame: "base_link",
     # assembled_cloud_sub_topic: "/kitti/velo/pointcloud",
 
+    ARGOS_format: true,
     sensor_frame: "velodyne",
     assembled_cloud_sub_topic: "/velodyne_points",
 

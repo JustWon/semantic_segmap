@@ -9,8 +9,8 @@ SegMapper: {
   tf_publication_rate_hz: 20,
   
   LaserSlamWorker: {
-    remove_ground_from_local_map: false,
-    use_odometry_information: true,
+    remove_ground_from_local_map: true,
+    use_odometry_information: false,
     
     odom_frame: "world",
     sensor_frame: "velodyne",
@@ -122,7 +122,7 @@ SegMapper: {
       add_m_estimator_on_icp: false,
     
       use_icp_factors: true, #Introducing ICP constraints will introduce a drift.
-      use_odom_factors: true,
+      use_odom_factors: false,
       nscan_to_match: 3,
       nscan_in_sub_map: 5,
       save_icp_results: false,
