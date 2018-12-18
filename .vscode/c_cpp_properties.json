@@ -1,0 +1,32 @@
+{
+    "configurations": [
+        {
+            "browse": {
+                "databaseFilename": "",
+                "limitSymbolsToIncludedHeaders": true
+            },
+            "includePath": [
+                "/home/dongwonshin/segmap_ws/devel/include",
+                "/opt/ros/kinetic/include",
+                "/home/dongwonshin/segmap_ws/src/eigen_checks/include",
+                "/home/dongwonshin/segmap_ws/src/libpointmatcher_ros/ethzasl_gridmap_2d/include",
+                "/home/dongwonshin/segmap_ws/src/laser_slam/laser_slam/include",
+                "/home/dongwonshin/segmap_ws/src/laser_slam/laser_slam_ros/include",
+                "/home/dongwonshin/segmap_ws/src/libpointmatcher_ros/libpointmatcher_ros/include",
+                "/home/dongwonshin/segmap_ws/src/mincurves/mincurves/include",
+                "/home/dongwonshin/segmap_ws/src/minkindr/minkindr/include",
+                "/home/dongwonshin/segmap_ws/src/minkindr_ros/minkindr_conversions/include",
+                "/home/dongwonshin/segmap_ws/src/minkindr_gtsam/minkindr_gtsam/include",
+                "/home/dongwonshin/segmap_ws/src/segmap/segmapper/include",
+                "/home/dongwonshin/segmap_ws/src/segmap/segmatch/include",
+                "/home/dongwonshin/segmap_ws/src/segmap/segmatch_ros/include",
+                "/home/dongwonshin/segmap_ws/src/segmap/tf_graph_executor/include",
+                "/home/dongwonshin/segmap_ws/src/laser_slam/sensor_drivers/velodyne_assembler/include",
+                "/usr/include"
+            ],
+            "name": "Linux",
+            "intelliSenseMode": "gcc-x64"
+        }
+    ],
+    "version": 4
+}

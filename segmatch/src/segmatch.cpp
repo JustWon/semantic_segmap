@@ -388,6 +388,7 @@ void SegMatch::update(const std::vector<laser_slam::Trajectory>& trajectories) {
       pose.second = trajectories.at(i).at(pose.first);
     }
   }
+  
   // Update the source, target and clouds in the buffer.
   for (auto& source_cloud: segmented_source_clouds_) {
     source_cloud.second.updateSegments(trajectories);

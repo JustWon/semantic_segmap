@@ -291,6 +291,9 @@ void SegMapper::segMatchThread() {
         //Publish the trajectories.
         for (const auto& worker : laser_slam_workers_) {
           worker->publishTrajectories();
+          worker->publishSemanticMap(true);
+          // boost::thread thread(&LaserSlamWorker::publishSemanticMap, &(*worker), true);
+          // thread.join();
         }
 
         // Unlock the workers.

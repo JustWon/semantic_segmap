@@ -28,7 +28,7 @@
   
   <!-- segmapper node -->
   <include file="$(find segmapper)/launch/segmapper.launch">
-    <arg name="icp_configuration_file" value="/home/dongwonshin/segmap_ws/src/segmap/segmapper/launch/kitti/icp_dynamic_outdoor.yaml"/>
+    <arg name="icp_configuration_file" value="/home/dongwonshin/segmap_ws/src/segmap/segmapper/launch/kitti/icp_dynamic_outdoor_labeled.yaml"/>
     <arg name="icp_input_filters_file" value="$(find segmapper)/launch/kitti/input_filters_outdoor.yaml"/>
   </include>
   
