@@ -10,7 +10,7 @@
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_10_03_drive_0034.bag"/> -->
   <!-- line for 03 dataset -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0016.bag"/> -->
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0018.bag"/>
+  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0018.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0020.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0027.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/KITTI_odometry_dataset/2011_09_30_drive_0028.bag"/> -->
@@ -21,8 +21,9 @@
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_09_26_0051.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_09_26_0022.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/kitti2bag/sr_kitti_2011_10_03_0047.bag"/> -->
-
-    <!-- Labeled SR dataset -->
+  <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2019-02-07-13-36-52.bag"/>
+  
+  <!-- Labeled SR dataset -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/SeoulRobotics/2018-11-02-maru-labeled-single.bag"/> -->
   <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/SeoulRobotics/2018-11-02-maru-labeled.bag"/> -->
 
