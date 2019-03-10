@@ -148,21 +148,21 @@ void DynamicVoxelGrid<_DVG_TEMPLATE_SPEC_>::dumpVoxels() const {
 bool semantic_voxel_filter (float intensity)
 {
   bool flag;
-  int semantic_label = intensity/1000;
+  int semantic_label = intensity;
   switch (int(semantic_label)){
     case 0: // Misc.
       flag = true;
       break;
-    case 1: // Car (this is controversial)
-      flag = true;
-      break;
-    case 2: // Ground
-      flag = true;
-      break;
-    case 3: // Cyclist
+    case 1: 
       flag = false;
       break;
-    case 4: // Pedestrian
+    case 2: 
+      flag = false;
+      break;
+    case 3: 
+      flag = false;
+      break;
+    case 4: 
       flag = false;
       break;
     default:

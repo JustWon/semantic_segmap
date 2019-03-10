@@ -1,6 +1,6 @@
 - git:
    local-name: laser_slam
-   uri: https://github.com/JustWon/laserslam_sr.git
+   uri: https://github.com/JustWon/semantic_laserslam.git
 - git:
    local-name: eigen_catkin
    uri: https://github.com/ethz-asl/eigen_catkin.git

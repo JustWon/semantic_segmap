@@ -199,6 +199,7 @@ void SegMapper::segMatchThread() {
     {
       std::lock_guard<std::mutex> map_lock(local_maps_mutexes_[track_id]);
       local_maps_[track_id].updatePoseAndAddPoints(new_points, current_pose);
+      // ROS_INFO("%f",new_points[0][0].intensity);
     }
 
     // Process the source cloud.
