@@ -27,11 +27,11 @@ outlierFilters:
      ratio: 0.9
   - SurfaceNormalOutlierFilter:
      maxAngle: 1.5
-  # - GenericDescriptorOutlierFilter:
-  #    source: reading
-  #    descName: semantic
-  #    useLargerThan: 0
-  #    threshold: 0.1
+  - GenericDescriptorOutlierFilter:
+     source: reading
+     descName: semantic
+     useLargerThan: 0
+     threshold: 0.1
 
 errorMinimizer:
   PointToPlaneErrorMinimizer
