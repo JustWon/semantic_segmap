@@ -153,16 +153,16 @@ bool semantic_voxel_filter (float intensity)
     case 0: // Misc.
       flag = true;
       break;
-    case 1: 
+    case 1: // Ped
       flag = false;
       break;
-    case 2: 
+    case 2: // Cyc
       flag = false;
       break;
-    case 3: 
+    case 3: // Car
       flag = false;
       break;
-    case 4: 
+    case 4: // Van
       flag = false;
       break;
     default:

@@ -15,7 +15,7 @@ SegMapper: {
     odom_frame: "world",
     sensor_frame: "velodyne",
     
-    VoxelNet_format: false,
+    VoxelNet_format: true,
     assembled_cloud_sub_topic: "/inference_results",
 
     trajectory_pub_topic: "trajectory",

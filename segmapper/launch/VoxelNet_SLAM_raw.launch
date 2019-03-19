@@ -3,20 +3,12 @@
 <launch>
   
   <arg name="respawn_value" default="false" /> <!-- boolean: true, false -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2011_09_29_drive_0071.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2011_09_30_drive_0028.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2011_10_03_drive_0042.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2011_10_03_drive_0034.bag"/> -->
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2011_10_03_drive_0027.bag"/> -->
-  <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2011_09_30_drive_0018.bag"/>
-  <!-- <arg name="bag_file" value="/home/dongwonshin/Desktop/rosbag_recordings/2011_09_26_drive_0036.bag"/> -->
-  <rosparam param="LaserMapper/bag_file" subst_value="True">$(arg bag_file)</rosparam>
 	
   <!-- Rviz visualization config file path -->
   <arg name="rviz_config_file" value="/home/dongwonshin/segmap_ws/src/segmap/rviz/semantic_kitti_loop_closure.rviz"/>
 
   <!-- ROS parameters -->
-  <rosparam>use_sim_time: true</rosparam>
+  <rosparam>use_sim_time: false</rosparam>
   <rosparam command="load" file="$(find segmapper)/launch/VoxelNet_SLAM.yaml"/>
 
   <!-- rviz node -->
@@ -35,7 +27,5 @@
     <arg name="icp_configuration_file" value="$(find segmapper)/launch/VoxelNet_icp_config.yaml"/>
     <arg name="icp_input_filters_file" value="$(find segmapper)/launch/kitti/input_filters_outdoor.yaml"/>
   </include>
-  
-  <!-- rosbag player node -->
-  <node name="player" pkg="rosbag" type="play" output="screen" args=" -s 0 -r 5 --clock $(arg bag_file)"/>
+
 </launch>

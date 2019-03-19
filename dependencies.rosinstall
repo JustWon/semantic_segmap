@@ -51,7 +51,7 @@
    version: 88e0bd4
 - git:
    local-name: libpointmatcher_ros
-   uri: https://github.com/ethz-asl/ethzasl_icp_mapping.git
+   uri: https://github.com/ethz-asl/semantic_libpointmatcher_ros.git
    version: a7d8ea9
 - git:
    local-name: catkin_simple
